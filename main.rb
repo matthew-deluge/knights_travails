@@ -1,33 +1,18 @@
-#Create an array using permutations (8x8)
-require 'pry'
+require_relative 'graph.rb'
+require_relative 'node.rb'
+require_relative 'knight.rb'
+require_relative 'board.rb'
 
-
-
-=begin
-  def knight_moves(initial, final, searched_array = [], move_array = [], queue = [])
-    search_index = @board.index(initial)
-    return final if @graph[search_index].include?(final)
-    
-    @graph[search_index].each do |potential_move|
-      next if searched_array.include?(potential_move)
-      queue.push(potential_move)
-    end
-    # binding.pry
-    searched_array.push(initial)
-    next_up = queue.shift
-    move_array.unshift(knight_moves(next_up, final, searched_array, move_array, queue))
-    move_array.unshift(initial) if move_array.include?(final)
-    move_array
-  end
-
+def knight_moves(start, finish)
+  g = Graph.new
+  move_array = g.shortest_path(g.find_node(start), g.find_node(finish))
+  puts "You made it in #{move_array.length-1} moves! Here is your path:"
+  move_array.each { |move| print " #{move}\n" }
 end
 
 
+knight_moves([1, 1], [8, 8])
+knight_moves([5, 6], [6, 5])
+knight_moves([7, 8], [6, 6])
 
 
-
-
-knight = Knight.new
-print knight.knight_moves([2,1],[1,1])
-
-=end

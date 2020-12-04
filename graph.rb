@@ -9,6 +9,8 @@ class Graph
   def initialize
     @vertices = []
     @piece = Knight.new
+    populate_vertices
+    populate_moveset
   end
 
   def add_vertex(data)
@@ -17,6 +19,19 @@ class Graph
 
   def add_edge(start_node, end_node)
     start_node.neighbors.push(end_node)
+  end
+
+  def populate_vertices
+    b = Board.new(8)
+    b.board.each { |spot| add_vertex(spot) }
+  end
+
+  def populate_moveset
+    @vertices.each do |vertex_a|
+      @vertices.each do |vertex_b|
+      add_edge(vertex_a, vertex_b) if @piece.valid_move?(vertex_a.data, vertex_b.data)
+      end
+    end
   end
 
   def pretty_print
@@ -29,11 +44,7 @@ class Graph
   end
 
   def find_node(value)
-    vertices.each do |node|
-      if node.data == value
-        return node
-      end
-    end
+    vertices.each { |node| return node if node.data == value }
   end
 
 
@@ -47,43 +58,25 @@ class Graph
       pred[vertex] = nil
     end
     dist[start_node] = 0
-    current = nil
     until queue.empty?
       current = queue.shift
       break if current == end_node
+
       current.neighbors.each do |neighbor|
-        unless pred.values.include?(neighbor)
+        next if pred.values.include?(neighbor)
           queue.push(neighbor)
           dist[neighbor] = dist[current] + 1
           pred[neighbor] = current
-        end
       end
     end
-    
     until current == start_node
       path.unshift(current.data)
       current = pred[current]
     end
     path.unshift(start_node.data)
     path
-
-
   end
 
 end
-
-
-g = Graph.new
-b = Board.new(8)
-b.board.each do |spot|
-  g.add_vertex(spot)
-end
-g.vertices.each do |vertex_a|
-  g.vertices.each do |vertex_b|
-    g.add_edge(vertex_a, vertex_b) if g.piece.valid_move?(vertex_a.data, vertex_b.data)
-  end
-end
-
-print g.shortest_path(g.find_node([1,1]), g.find_node([8,8]))
 
 
