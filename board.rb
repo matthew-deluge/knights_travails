@@ -1,3 +1,5 @@
+# creates a chess board as an array of coordinates based on the passed side length
+# typical chess board has eight sides
 class Board
   attr_accessor :board
 
@@ -17,6 +19,3 @@ class Board
   end
 
 end
-
-#b = Board.new(8)
-#print b.board

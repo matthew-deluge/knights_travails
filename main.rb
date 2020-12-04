@@ -11,8 +11,8 @@ def knight_moves(start, finish)
 end
 
 
-knight_moves([1, 1], [8, 8])
-knight_moves([5, 6], [6, 5])
-knight_moves([7, 8], [6, 6])
+knight_moves([1, 1], [2, 3])
+knight_moves([1, 1], [4, 4])
+knight_moves([4, 4], [1, 1])
 
 

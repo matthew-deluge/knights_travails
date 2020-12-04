@@ -1,8 +1,8 @@
 require_relative 'node.rb'
 require_relative 'board.rb'
 require_relative 'knight.rb'
-require 'pry'
 
+# Graph class is used to create an adjacency list of positions (vertices) and possible moves (edges)
 class Graph
   attr_accessor :vertices, :piece
 
@@ -29,7 +29,7 @@ class Graph
   def populate_moveset
     @vertices.each do |vertex_a|
       @vertices.each do |vertex_b|
-      add_edge(vertex_a, vertex_b) if @piece.valid_move?(vertex_a.data, vertex_b.data)
+        add_edge(vertex_a, vertex_b) if @piece.valid_move?(vertex_a.data, vertex_b.data)
       end
     end
   end
@@ -39,7 +39,7 @@ class Graph
       print vertex.data
       print ' Neighbors: '
       vertex.neighbors.each { |neighbor| print neighbor.data }
-      puts ""
+      puts ''
     end
   end
 
@@ -47,26 +47,23 @@ class Graph
     vertices.each { |node| return node if node.data == value }
   end
 
-
+  # uses breadth first algorithm to find the shortes path between two nodes
+  # largely relied on "geeksforgeeks.com" for info on graph representation and search
   def shortest_path(start_node, end_node)
     queue = [start_node]
-    dist = {}
     pred = {}
     path = []
     @vertices.each do |vertex|
-      dist[vertex] = nil
       pred[vertex] = nil
     end
-    dist[start_node] = 0
     until queue.empty?
       current = queue.shift
       break if current == end_node
 
       current.neighbors.each do |neighbor|
         next if pred.values.include?(neighbor)
-          queue.push(neighbor)
-          dist[neighbor] = dist[current] + 1
-          pred[neighbor] = current
+        queue.push(neighbor)
+        pred[neighbor] = current
       end
     end
     until current == start_node
